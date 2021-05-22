@@ -448,6 +448,17 @@ int usunAdresata(vector <Osoba> &ksiazkaAdresowa,int iloscOsob) {
     cin >> id;
     int czyIstnieje = 0;
     char wybor;
+    for(int i = 0; i < iloscOsob; i++)
+    {
+       if(ksiazkaAdresowa[i].id == id && ksiazkaAdresowa[i].idUzytkownika == idZalogowanegoUzytkownika){
+            czyIstnieje++;
+       }
+    }
+    if(czyIstnieje == 0) { //Zwiekszona wartosc zmiennej czyIstnieje oznacza znalezienie osoby o podanym imieniu.
+        cout << "Osoba o podanym id nie jest zapisana w ksi¥¾ce adresowej." << endl;
+        Sleep(1000);
+        return iloscOsob;
+    }
     for(int i = 0; i < iloscOsob; i++) {
         if(ksiazkaAdresowa[i].id == id && ksiazkaAdresowa[i].idUzytkownika == idZalogowanegoUzytkownika) {
             cout << "Je¾eli chcesz usun¥† adresata wci˜nij t" << endl;
@@ -457,21 +468,15 @@ int usunAdresata(vector <Osoba> &ksiazkaAdresowa,int iloscOsob) {
                 ksiazkaAdresowa.erase(ksiazkaAdresowa.begin() + i);
                 ksiazkaAdresowa.shrink_to_fit();
                 cout << "Usuni©to osob©." << endl;
+                przepiszDaneDoNowegoPlikuTekstowegoPoUsunieciuAdresata(id);
                 Sleep(1000);
             } else {
                 cout << "Osoba nie zostaˆa usuni©ta." << endl;
                 Sleep(1000);
             }
         }
-        czyIstnieje++;
-    }
-    if(czyIstnieje == 0) { //Zwiekszona wartosc zmiennej czyIstnieje oznacza znalezienie osoby o podanym imieniu.
-        cout << "Osoba o podanym id nie jest zapisana w ksi¥¾ce adresowej." << endl;
-    } else {
-        przepiszDaneDoNowegoPlikuTekstowegoPoUsunieciuAdresata(id);
     }
     ksiazkaAdresowa.shrink_to_fit();
-
     iloscOsob = ksiazkaAdresowa.size();
     return iloscOsob;
     system("pause");
@@ -521,6 +526,7 @@ int wczytajMenuKsiazkiAdresowej(vector <Uzytkownik> &uzytkownicy,int iloscUzytko
     }
 }
 int main() {
+    setlocale( LC_ALL, "" );
     vector <Uzytkownik> uzytkownicy;
     wczytajUzytkownikow(uzytkownicy);
     int iloscUzytkownikow = uzytkownicy.size();
@@ -528,7 +534,6 @@ int main() {
     while(1) {
         if(idZalogowanegoUzytkownika == 0) {
             system("cls");
-            setlocale( LC_ALL, "" );
             cout << "1. Rejestracja" << endl;
             cout << "2. Logowanie" << endl;
             cout << "9. Zakoäcz program" << endl;
